@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  express:
+    container_name: express
+    build: ./express
+    depends_on:
+      - "postgres"
+    env_file:
+      - ./express/.env
+    ports:
+      - "3000:3000"
+    volumes: 
+      - ./express:/usr/src/app
+  react:
+    container_name: react
+    build: ./react-form
+    ports:
+      - "8080:3000"
+    volumes: 
+      - ./react-form:/usr/src/app
+  postgres:
+    container_name: postgres
+    image: postgres:14.2
+    restart: always
+    env_file:
+      - ./express/.env
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
